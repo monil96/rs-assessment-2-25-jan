@@ -1,0 +1,29 @@
+
+
+# Server properties
+server:
+  jms:
+    queue:
+      name: "abcd"
+      brokerURL: "tcp://localhost:61616"
+#      user: Secured Property
+#      password-secure: Secured Property
+      maxConnections: "5"
+      concurrentConsumers: "3"
+      initialRedeliveryDelay: "20000"
+      redeliveryDelay: "20000"
+      sessionCacheSize: "100"
+      maximumRedeliveries: "5"
+      
+file:
+  path: 
+    "C:/Users/1026893/Downloads/SalesJan2009.csv"
+  workingdir:
+    "C:/Users/1026893/Downloads"
+ 
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  
+security:
+  key: "monil"

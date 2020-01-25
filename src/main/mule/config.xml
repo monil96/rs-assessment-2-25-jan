@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="9d047904-43bd-405e-9e08-2028261ccd8d" >
+		<file:connection workingDir="${file.workingdir}" />
+	</file:config>
+	
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="5885f7c7-ac39-4afb-9a70-72b368255807" >
+		<jms:active-mq-connection username="${secure::user}" password="${secure::password}">
+			<jms:caching-strategy >
+				<jms:default-caching sessionCacheSize="${server.jms.queue.sessionCacheSize}" />
+			</jms:caching-strategy>
+			<jms:factory-configuration brokerUrl="${server.jms.queue.brokerURL}" initialRedeliveryDelay="${server.jms.queue.initialRedeliveryDelay}" redeliveryDelay="${server.jms.queue.redeliveryDelay}" maxRedelivery="${server.jms.queue.maximumRedeliveries}" />
+		</jms:active-mq-connection>
+	</jms:config>
+	
+	<configuration-properties doc:name="Configuration properties" doc:id="215153ae-2f85-43b4-873b-aaee0b23c0c2" file="configuration_properties.yaml" />
+	
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="be7e84c8-fffd-4fa5-91f1-4a29fb7379c0" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<configuration doc:name="Configuration" doc:id="96a7a527-c848-4cfa-aa1c-0f0b53bccd5a" defaultErrorHandler-ref="error-handlerError_Handler" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="ea973a09-0323-4ccf-8147-e22e957ea0fa" file="secure-properties-jms.properties" key="monil" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+
+</mule>
