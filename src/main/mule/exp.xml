@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="expFlow-consumer" doc:id="c5034d8a-fe25-4a5b-a1b8-d9e16ed4c6e8" >
+		<jms:listener doc:name="Listener" doc:id="849e46cc-feb2-4493-aba2-aa56b6bf240c" config-ref="JMS_Config" destination="${server.jms.queue.name}" >
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:listener>
+		<flow-ref doc:name="prcFlow-Consumer" doc:id="4f118bc5-b9fd-4336-aa57-ff9bb1b20c42" name="prcFlow-Consumer"/>
+	</flow>
+	<flow name="expFlow-publisher" doc:id="92d5a1ac-e807-4732-9bd5-10aa539ff617" >
+		<http:listener doc:name="Listener" doc:id="1c538f9d-4132-4bf4-aa02-a3563f3db7ff" config-ref="HTTP_Listener_config" path="/csvread" />
+		<flow-ref doc:name="prcFlow-Publisher" doc:id="841fdd64-5b05-49e3-9bd3-ac2410b987b2" name="prcFlow-Publisher"/>
+	</flow>
+</mule>

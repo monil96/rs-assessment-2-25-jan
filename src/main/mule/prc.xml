@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="prcFlow-Consumer" doc:id="367fc2f1-9cb6-4bd0-b2c1-3816b57d6848" >
+		<ee:transform doc:name="Transformation to filter the incoming data as per the criteria" doc:id="0ce6b419-c965-4241-8cbc-faf422645ac4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var filteredoutput = payload filter ((value, index) -> (value.Price == "1200") and (value.Payment_Type == "Mastercard") and ((value.Country == "United States") or (value.Country == "Spain") or (value.Country == "Canada")))
+---
+
+filteredoutput map ((item, index) -> {
+    "Transaction_date" : item.Transaction_date,
+    "Product_name" : item.Product,
+    "Price" : item.Price,
+    "Country" : item.Country,
+    "Payment_type" : item.Payment_Type
+}) ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="1f3e22da-f36e-44e7-bcd2-a52b394da60a" message="#[payload]" />
+	</flow>
+	<flow name="prcFlow-Publisher" doc:id="6118787d-a2a2-4e50-bd45-42e3f48fee1a" >
+		<file:read doc:name="Read" doc:id="e9972522-f732-4138-8382-ba05bcebbac0" config-ref="File_Config" path="${file.path}" />
+		<flow-ref doc:name="sysFlow-Publisher" doc:id="c4d0a598-c27b-42dc-8fb9-bc759a80b7e2" name="sysFlow-Publisher"/>
+		<ee:transform doc:name="Transform Message" doc:id="e5af7266-2c12-4221-9ad4-d9f85ea86ff0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

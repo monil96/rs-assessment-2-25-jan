@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<flow name="sysFlow-Publisher" doc:id="2819441a-355b-494d-944e-fa81ea59daef" >
+		<jms:publish doc:name="Publish" doc:id="ee8a758d-e325-4c55-8f43-9e70163ee85b" config-ref="JMS_Config" destination="${server.jms.queue.name}" />
+	</flow>
+</mule>
