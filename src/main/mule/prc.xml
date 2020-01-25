@@ -16,12 +16,12 @@ var filteredoutput = payload filter ((value, index) -> (value.Price == "1200") a
 ---
 
 filteredoutput map ((item, index) -> {
-    "Transaction_date" : item.Transaction_date,
+   "Transaction_date" : ("0"++(item.Transaction_date replace "09" with "2009") splitBy " ")[0],
     "Product_name" : item.Product,
     "Price" : item.Price,
     "Country" : item.Country,
     "Payment_type" : item.Payment_Type
-}) ]]></ee:set-payload>
+})]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="1f3e22da-f36e-44e7-bcd2-a52b394da60a" message="#[payload]" />
